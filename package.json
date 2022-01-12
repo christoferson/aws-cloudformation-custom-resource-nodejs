@@ -1,0 +1,25 @@
+{
+  "name": "cfn-custom-resource",
+  "version": "1.0.0",
+  "description": "Cloudformation Custom Resource (NodeJS)",
+  "main": "resource.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christoferson/aws-cloudformation-custom-resource-nodejs.git"
+  },
+  "keywords": [
+    "Cloudformation",
+    "Custom",
+    "Resource",
+    "NodeJs"
+  ],
+  "author": "cc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/christoferson/aws-cloudformation-custom-resource-nodejs/issues"
+  },
+  "homepage": "https://github.com/christoferson/aws-cloudformation-custom-resource-nodejs#readme"
+}
