@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation to set up a Custom Resource backed by Lambda implemented in Node.
+
+Parameters:
+  LambdaRuntime:
+    Description: Node Lambda Runtime
+    Type: String
+    Default: nodejs14.x
+  LambdaHandler:
+    Description: Node Lambda Handler
+    Type: String
+    Default: resource.handler
+  CodeBucket:
+    Description: Bucket that contains packaged source
+    Type: String
+    Default: my-bucket
+  CodeKey:
+    Description: Name of the packaged source
+    Type: String
+    Default: custom-resource-nodejs.zip
+
+Resources:
+
+  CustomResourceLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: !Ref CodeBucket
+        S3Key: !Ref CodeKey
+      Handler: !Ref LambdaHandler
+      Role: !GetAtt 'CustomResourceLambdaExecutionRole.Arn'
+      Runtime: !Ref 'LambdaRuntime'
+      Timeout: '30'
+
+  CustomResourceLambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: main
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
+              #- Effect: Allow
+              #  Action:
+              #    - ec2:DescribeImages
+              #  Resource: '*'
+
+Outputs:
+
+  CustomResourceLambdaArn:
+    Description: Custom Resource Lambda Function ARN
+    Value: !GetAtt 'CustomResourceLambda.Arn'

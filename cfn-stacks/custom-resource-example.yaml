@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Example CloudFormation to use the custom resource.
+
+Parameters:
+
+  CustomResourceLambdaArn:
+    Type: String
+    Description: Custom Resource Lambda ARN
+
+Resources:
+  
+  CustomResource:
+    Type: Custom::CustomResource
+    Properties:
+      ServiceToken: !Ref CustomResourceLambdaArn
+      Parameter1: Custom Resource Argument Value 1
+      Parameter2: Custom Resource Argument Value 2
+      Parameter3: Custom Resource Argument Value 3
+
+Outputs:
+
+  Message:
+    Description: The message from the custom resource.
+    Value: !GetAtt 'CustomResource.Message'
